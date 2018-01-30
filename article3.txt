@@ -1,0 +1,81 @@
+<p><font size="2">
+Given two arrays a = {a<sub>1</sub>,a<sub>2</sub>,a<sub>3</sub>.....} and b = {b<sub>1</sub>,b<sub>2</sub>,b<sub>3</sub>.....} , find the smallest number k such that a<sub>i</sub>%k = b<sub>i</sub> where 1<= i <= n . And if it is not possible print "-1".
+</font></p> 
+<p><font size="2">Examples:</font></p> 
+<pre>
+Input : a[] = {6,12,25}
+        b[] = {0,0,1}
+Output: 2
+Explanation : 
+2 is the smallest number which gives remainder {0,0,1} i.e. b when divided with elements of array a  i.e. {6,12,25}.
+Input : a[] = {21,24,27,31,50}
+        b[] = {1,4,7,31,31,50}
+Output: 10
+Explanation : 
+10 is the smallest number which gives remainder b<sub>i</sub>  when divided with elements of array a i.e. a<sub>i</sub>.
+
+</pre>
+
+<!-- To show strongly recommend and practice link    -->
+<div id="practice"></div>
+
+<p><font size="2">
+Following algorithm can give us the smallest number , when divided with elements of a will produce corresponding elemnts in b.
+1. Produce a new array c where c<sub>i</sub> = a<sub>i</sub> - b<sub>i</sub>.
+2. Fnd a number which can be a factor of all elements of the arrat c , i.e. getting GCD of the array.(gcd (a<sub>n</sub> , gcd(a<sub>n-1</sub>,gcd(...) ) ) ).
+3. Find the factors of the gcd and then select the first element which comes after the maximum element of b, because we have to select the smallest element.
+</font></p> 
+
+[sourcecode language="CPP" highlight=""]
+// C++ implementation of above algorithm: 
+#include <bits/stdc++.h>
+using namespace std;
+int ans = 1e9 + 7;
+int gcd(int a, int b){
+    if(a == 0){
+        return b;
+    }
+    return gcd(b % a, a);
+}
+int main(){
+    int a[] = {6,12,25};
+    int b[] = {0,0,1};
+    int n = sizeof(a)/sizeof(a[0]);
+    int c;
+    int mx = -1;
+    int gc = 0;
+    for(int i = 0; i < n; i++)
+    {
+        c = a[i] - b[i];
+        mx = max(mx,c) 
+        gc = gcd(gc, c);
+    }
+    for(int i = 1; i <= sqrt(gc); i++) //sqrt of gc is enough to find all factors of gc
+    {
+        if(gc % i == 0)
+        {   // we are considering both 'i' and 'gc/i' numbers at a single loop can run till sqrt(gc) 
+            if(i > mx)
+            {
+                ans = min(ans, i);
+            }
+            if((gc / i) > mx)
+            {
+                ans = min(ans, (gc / i));
+            }
+        }
+    }
+    if(ans == (1e9 + 7))
+    {
+        cout << -1;
+    }
+    else
+    {
+        cout << ans;
+    }
+}
+[/sourcecode]
+Output:
+<pre>
+2
+</pre>
+Time Complexity : O(n)

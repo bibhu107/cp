@@ -1,0 +1,2 @@
+integer  to string :: to_string(3.1415926)
+integer to string :: stoi()

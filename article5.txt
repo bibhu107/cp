@@ -1,0 +1,66 @@
+<p><font size="2">Given  n  nodes of a forest and every nodes corresponding most distant node. The task is to find the number of trees in the forest.
+
+</font></p> 
+
+
+<p><font size="2">Examples:</font></p> 
+<pre>
+Input : n = 5 
+        arr[ n ] = {2, 3, 2, 5, 4}        
+                                 
+        
+Output : 2
+Explanation : There can be  2 trees    1       4
+                                      / \       \
+                                     2   3       5
+                                    
+</pre>
+
+<!-- To show strongly recommend and practice link    -->
+<div id="practice"></div>
+ 
+<p><font size="2">
+It is very simple , Just application of DFS on every node. So we simple start from any node and perform dfs traversal all connected nodes get visited and increment our count by one . Again perform DFS traversal if some nodes yet not visited.
+</font></p> 
+[sourcecode language="CPP" highlight=""]
+#include <bits/stdc++.h>
+using namespace std;
+const int MAXN = 1000;
+int vis[MAXN];
+vector<int> adj[MAXN];
+//Recursive function used by NumberOfTrees
+void dfs(int v) {
+    vis[v] = 1;
+    for (int u: adj[v]) {
+        if (!vis[u])
+            dfs(u);
+    }
+}
+//The Main Function finding number of trees
+int NumberOfTrees(int n , int arr[ ]){
+    for (int i = 1; i <= n; ++i) {
+        int x = arr[i-1];
+        adj[i].push_back(x); //Edge is created between node and its most distant node
+        adj[x].push_back(i);
+    }
+    int count = 0;
+    for (int i = 1; i <= n; ++i)
+        if (!vis[i]) {
+            dfs(i);        //DFS traversal of every node if not visited
+            ++count;
+        }
+    return (count);
+}
+int main() {
+    int  n = 5; //Number of Nodes 
+    int arr[n] = {2, 3, 2, 5, 4} ; //Most distant nodes of corresponding nodes
+    int ans = NumberOfTrees(n, arr); //function to return number of trees
+    cout << ans << "\n";
+    return 0;
+}
+[/sourcecode]
+Output:
+<pre>
+2
+</pre>
+Time Complexity : O(E*(E+V))

@@ -1,0 +1,50 @@
+ 
+							Minimize difference between largest and smallest integers from K selected integers of an given array
+
+Given an array of N integers, Our task is to select  K integers from the array such that the difference between Largest and Smallest integer in K selected integers is minimized.
+
+If  (n1,n2,n3,n4,n5,n6...nk) are  numbers selected from the array  
+we have to minimize {max(n1,n2,n3,n4,n5,n6...nk)-min(n1,n2,n3,n4,n5,n6...nk)}
+where max denotes the largest integer among the selected elements, and min denotes the smallest integer of the same.
+
+Example:
+array[]={10,4,1,2,3,,10,20,30,40,100,200}		Here let K=4 
+selecting the integers {1,2,3,4} 
+max(1,2,3,4) - min(1,2,3,4) = 4 - 1 = 3
+The least difference can be 3.
+
+If we sort the k selected integers, The Largest integer will be in last position and the smallest will be in first position. So if the array is sorted the problem is simplified.Now We have to take any integer from the array and calculate it's difference with the integer which is at a distance of k-1 units(right side).
+And print the least difference.
+
+Following is the complete algorithm:
+1.Sort the given array in order of O(n log n) time.
+2.Find the difference between each element and its corresponding 'k-1' units distance away element.
+3.Print the least difference.
+
+Following is C++ implementation of above approach: 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int Size,K,a;
+    int  min=INT_MAX;
+    cin>>Size>>K;
+    int array[Size];
+    for(int i=0;i<Size;i++)
+       cin>>array[i];
+        
+    // sort the array in O(n log n) time.
+    sort(array,array+Size);
+
+    for(int i=0; i<Size-K+1; i++)
+    {
+    	//find difference between one element and it's corresponding 'k-1' distance away element 
+    	// if min>difference, update min
+        if(min>abs(array[i]-array[i+K-1]))
+            min=abs(array[i]-array[i+K-1]);
+
+    }
+
+    cout<<min<<endl;
+}
+This article is contributed by Bibhu. Please comment if you find anything to be improved, or you want to share more information about the topic discussed above.

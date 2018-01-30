@@ -1,0 +1,83 @@
+									      Minimum Number Of One's Required To Make Whole  Array filled with 1
+
+Given N sized array,Each cell is filled with 0 or 1. Only Cell's  holding 1 have a power to lend 1 to cell's which are at distance < K.
+Task is to  Find the minimum number of Cell's required to make whole Cell filled with 1.
+If this task is not possible for the given configuration of array print -1.
+
+
+Example:
+Consider there are following array  6 :: 0 1 1 1 1 0  and let K be 2  
+answer is:2
+Cell's a1,a2,a3,a4 have 1's they can only provide 1 to near cells in range < 2. If we choose on the cell's  a1 and a4 , then all cell's will have 1. Thus answer is 2.
+
+We can solve this using a two pointers approach.
+Following is the complete algorithm for finding the minimum number of  Cells :
+1.We take a Cell (lets consider it as first pointer) and  move K-1 th cell (to right).
+    Why K-1 units distance?
+    If we take more than K-1  then obviously the first pointer will not be in range. And if we take less than K-1 then there is a chance we won't get minimum number of cells
+
+NOTE:If we exceede the array size limit while moving k-1th cell we will take n-1 as our second pointer
+
+2.We search the nearest cell with 1 in left side including that cell (including that cell means ,if the cell has 1 the nearest cell in left side for that cell is itself)
+3.We Choose that Cell on the nearest Cell if and only if the tower is present between two pointers or else we print "-1"
+4.Then again we consider from Cell which is at K distance from the last chosen Cell .
+    Why k distance away Cell?
+    To use Cell's full pottential we move k distance i.e it's range. 
+
+The time complexity for this algorithm is O(n) .
+
+NOTE:To solve this efficiently we maintain an array which holds position of the  left nearest  Cell holding 1.
+
+Following is C++ implementation of above approach: 
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 3e5 + 5;
+int size, range, NearestOne[N];
+//function to count minimum number of towers
+int NumberOfCells()
+{
+    int ans = 0;
+    for(int i=0; i<size; ) 
+    {
+        //i is our first pointer
+        //min is considered to avoid exceeding of the limit and i+range-1 is our second pointer
+        int Position = NearestOne[min(i + range - 1, size- 1)];
+
+        //Position holds the Position of left nearest 1 ,if it is "-1" that means there is no tower 
+        // if Position+range<=i i.e. the left nearest one is present before the first pointer 
+        // so obviously second pointer is not in range of left nearest one 
+        if(Position == -1 || Position + range <= i)
+        { 
+            cout<<"-1\n"; 
+            return 0;
+         }
+
+         //if Position is in between two pointers, we chose the cell and move K units forward from  position
+         i = Position + range;
+         ans++;
+    }
+    cout<<ans;
+    return(0);
+}
+
+int main() 
+{
+      
+    range=2;
+    int array[]={0,1,1,1,1,0};
+    size=sizeof(array)/sizeof(array[0]);
+    int LeftOne = -1;
+    int a;
+    for(int i = 0; i < size; i++) 
+    {
+        a=array[i];
+        if(a == 1) 
+        LeftTower = i;
+        NearestOne[i] = LeftOne;
+    }
+     
+   NumberOfCells();
+   return 0;
+}
+
+This article is contributed by Bibhu. Please comment if you find anything to be improved, or you want to share more information about the topic discussed above.
